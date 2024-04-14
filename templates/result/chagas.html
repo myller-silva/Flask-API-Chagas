@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da Classificação de Chagas</title>
+</head>
+<body>
+    <h1>Resultado da Classificação de Chagas</h1>
+    <h2>Modelo: {{ data.model }}</h2>
+    <h2>Imagens:</h2>
+    <ul> 
+    </ul>
+    <h2>Outputs da Rede Neural:</h2>
+    <ul>
+        {% for output in data.network_outputs %}
+            <li>{{ output }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Targets:</h2>
+    <ul>
+        {% for target in data.targets %}
+            <li>{{ target }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

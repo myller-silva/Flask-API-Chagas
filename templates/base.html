@@ -1,0 +1,45 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Classifier{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"
+    />
+    <style>
+      /* Define uma altura mínima para o corpo */
+      body {
+        min-height: 100vh; /* 100% da altura da viewport */
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Define uma altura mínima para o conteúdo */
+      .content-wrapper {
+        flex: 1; /* O conteúdo se expandirá para preencher o espaço restante */
+        min-height: 500px; /* Ou qualquer outro valor desejado */
+      }
+    </style>
+    <!-- Adicione seus estilos CSS personalizados aqui -->
+  </head>
+  <body class="bg-light">
+    <!-- Barra de Navegação -->
+    {% include 'navbar.html' %}
+
+    <!-- Conteúdo da Página -->
+    <div class="container bg-light p-4 content-wrapper">
+      {% block content %}
+      <!-- Conteúdo específico da página será adicionado aqui -->
+      {% endblock %}
+    </div>
+
+    <!-- Rodapé -->
+    {% include 'footer.html' %}
+
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <!-- Adicione seus scripts JavaScript personalizados aqui -->
+  </body>
+</html>

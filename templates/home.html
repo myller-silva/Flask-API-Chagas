@@ -1,0 +1,20 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Bem-vindo ao Classifier</h1>
+  <p>Esta é uma aplicação de classificação de instâncias que permite classificar dados usando diferentes modelos.</p>
+  <h2>Como funciona:</h2>
+  <p>Você pode carregar um arquivo CSV contendo instâncias a serem classificadas. Em seguida, selecione um modelo disponível para classificação.</p>
+  <p>A aplicação processará os dados usando o modelo selecionado e exibirá os resultados.</p>
+  {% if modelos %}
+  <h2>Modelos Disponíveis:</h2>
+  <ul class="list-group">
+    {% for modelo in modelos %}
+    <li value="{{ modelo }}" class="list-group-item">{{ modelo }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+{% endblock %}
