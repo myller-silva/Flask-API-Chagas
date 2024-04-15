@@ -48,6 +48,7 @@ def post_classify_chagas():
             f"{base_url_api}/chagas",
             json={"model": selected_model, "instancia": instancia},
         )
+
         if response.status_code == 200:
             return render_template(
                 "/result/chagas.html",
@@ -56,4 +57,4 @@ def post_classify_chagas():
                 response_data=response.json,
             )
         else:
-            return jsonify({"error": "Erro interno"}), 500
+            return response.json, response.status_code

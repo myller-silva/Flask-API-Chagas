@@ -1,7 +1,8 @@
 from flask import jsonify, request
-import numpy as np
 from app import app
 from config import INSTANCIA_TEMPLATE
+from services.predict_service import classificar_instancia
+
 from utils import (
     get_model_with_extension,
     get_models_dataframe,
@@ -16,34 +17,36 @@ def get_models_chagas():
     return jsonify(modelos_chagas)
 
 
-def classificar_instancia(model_pkl, instance):
-    values_list = np.array(list(instance.values()))
-    values_list = values_list[:-1]
-    values_list = values_list.reshape(1, -1)
-    predict = model_pkl.predict(values_list)
-    predict_proba = model_pkl.predict_proba(values_list)
-    return predict, predict_proba
-
-
 @app.route(f"{base_url_api}/chagas", methods=["POST"])
 def post_classificar_chagas():
     data = request.get_json()
-    if data and "model" in data and "instancia" in data:
-        model: str = data["model"]
-        instancia_template = INSTANCIA_TEMPLATE
-        atributos_em_ordem = list(instancia_template.keys())
-        instance_dict: list = data["instancia"]
-        instance = {attr: instance_dict[attr] for attr in atributos_em_ordem}
-        model_pkl = get_model_with_extension(
-            dataframe_path="chagas", file=model, extension=".pkl"
-        )
-        if not model_pkl:
-            return jsonify({"Erro": f"Modelo {model} não encontrado."}), 404
+    validation = validation_data(data)
+    if not validation[0]:
+        return validation[1], 400
 
-        predict, predict_proba = classificar_instancia(model_pkl, instance)
-        
-        return jsonify(
-            {"predict": predict.tolist(), "predict_proba": predict_proba.tolist()}
+    model: str = data["model"]
+    model_pkl = get_model_with_extension(
+        dataframe_path="chagas", file=model, extension=".pkl"
+    )
+    if not model_pkl:
+        return jsonify({"Erro": f"Modelo {model} nao encontrado."}), 404
+
+    atributos_em_ordem = list(INSTANCIA_TEMPLATE.keys())
+    instance_dict = data["instancia"]
+    instance = {attr: instance_dict[attr] for attr in atributos_em_ordem}
+    predict, predict_proba = classificar_instancia(model_pkl, instance)
+    return jsonify(
+        {"predict": predict.tolist(), "predict_proba": predict_proba.tolist()}
+    )
+
+
+def validation_data(data):
+    if "model" not in data:
+        return False, jsonify({"error": "Modelo nao encontrado"})
+    if "instancia" not in data:
+        return False, jsonify({"error": "Instancia nao encontrada"})
+    if type(data["instancia"]) != dict:
+        return False, jsonify(
+            {"error": "Tipo invalido para a instancia, deve ser um dicionario"}
         )
-    else:
-        return jsonify({"error": "Parâmetros inválidos"}), 400
+    return True, None
