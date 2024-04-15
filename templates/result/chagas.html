@@ -20,7 +20,18 @@
       <strong>Probabilidade:</strong>
       <ul class="list-group">
         {% for prob in response_data["predict_proba"] %}
-        <li class="list-group-item">{{ prob }}</li>
+        <li class="list-group-item">
+          {% for classe_value in prob %}
+          <div>
+            <span
+              style="margin-right: 20px"
+              class="{{'text-success' if loop.index0 == response_data['predict'][0] else 'text-danger'}} font-weight-bold mr-2"
+              >{{loop.index-1}}</span
+            >
+            <span>{{ classe_value }}</span>
+          </div>
+          {% endfor %}
+        </li>
         {% endfor %}
       </ul>
     </div>
