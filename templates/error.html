@@ -1,0 +1,21 @@
+<!-- error.html -->
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="text-center">
+          <h1 class="display-4 text-danger">
+            Erro <span class="text-danger">{{status_code}}</span>
+          </h1>
+          <p class="lead">Ocorreu um erro inesperado.</p>
+          {% if response_json %}
+          <p class="lead">Detalhes:</p>
+          <pre> {{ response_json | tojson | safe }} </pre>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block footer %} {% include 'footer.html' %} {% endblock %}
