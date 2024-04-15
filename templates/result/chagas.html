@@ -1,27 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultado da Classificação de Chagas</title>
-</head>
-<body>
-    <h1>Resultado da Classificação de Chagas</h1>
-    <h2>Modelo: {{ data.model }}</h2>
-    <h2>Imagens:</h2>
-    <ul> 
-    </ul>
-    <h2>Outputs da Rede Neural:</h2>
-    <ul>
-        {% for output in data.network_outputs %}
-            <li>{{ output }}</li>
+<!-- result/chagas.html -->
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <h1>Resultado da Classificação de Chagas</h1>
+  {% if model %}
+  <h2>Modelo: {{ model }}</h2>
+  {% endif %}
+
+  <ul class="list-group">
+    <div>
+      <strong>Predição:</strong>
+      <ul class="list-group">
+        {% for prob in response_data["predict"] %}
+        <li class="list-group-item">{{ prob }}</li>
         {% endfor %}
-    </ul>
-    <h2>Targets:</h2>
-    <ul>
-        {% for target in data.targets %}
-            <li>{{ target }}</li>
+      </ul>
+    </div>
+
+    <div>
+      <strong>Probabilidade:</strong>
+      <ul class="list-group">
+        {% for prob in response_data["predict_proba"] %}
+        <li class="list-group-item">{{ prob }}</li>
         {% endfor %}
-    </ul>
-</body>
-</html>
+      </ul>
+    </div>
+  </ul>
+  <div>
+    <a href="javascript:history.back()" class="btn btn-primary"
+      >Voltar para a página anterior</a
+    >
+  </div>
+</div>
+{% endblock %}

@@ -1,25 +1,27 @@
 <!-- chagas/classify.html -->
-{% extends '/base.html' %}
-
-{% block title %}
-Classificar Instância Chagas - Minha Aplicação
-{% endblock %}
-
+{% extends '/base.html' %} 
+{% block title %} Classificar Instância Chagas {%
+endblock %} 
 {% block content %}
 <div class="container">
   <h2 class="mb-4">Classificar Instância Chagas</h2>
   <form action="/classify/chagas" method="post">
     <label for="model">Modelo:</label>
     <select id="model" name="model" class="form-control">
-        {% for model in modelos %}
-            <option value="{{ model }}">{{ model }}</option>
-        {% endfor %}
+      {% for model in modelos %}
+      <option value="{{ model }}">{{ model }}</option>
+      {% endfor %}
     </select>
-    <br><br>
+    <br />
     {% for key, value in instancia.items() %}
-        <label for="{{ key }}">{{ key }}:</label>
-        <input type="text" id="{{ key }}" name="{{ key }}" value="{{ value }}" class="form-control">
-        <br><br>
+    <label for="{{ key }}">{{ key }}:</label>
+    <input
+      type="text"
+      id="{{ key }}"
+      name="{{ key }}"
+      value="{{ value }}"
+      class="form-control"
+    />
     {% endfor %}
     <button type="submit" class="btn btn-primary">Classificar</button>
   </form>
