@@ -1,0 +1,36 @@
+<canvas id="graficoPizza"></canvas>
+
+<div id="dadosGrafico" 
+    data-valores="{{valores}}" 
+    data-rotulos="{{labels}}">
+    
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var dadosGrafico = document.getElementById('dadosGrafico'); 
+    console.log(dadosGrafico)
+    var valores = JSON.parse(dadosGrafico.dataset.valores);
+    var rotulos = JSON.parse(dadosGrafico.dataset.rotulos);
+    // Crie o gráfico de pizza usando os valores e os rótulos obtidos
+    var ctx = document.getElementById('graficoPizza').getContext('2d');
+    var graficoPizza = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: rotulos,
+            datasets: [{
+                data: valores,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(54, 162, 235, 0.5)'
+                ]
+            }]
+        },
+        options: { 
+            title: {
+                display: true,
+                text: 'Gráfico de Pizza'
+            }
+        } 
+    });
+</script>
