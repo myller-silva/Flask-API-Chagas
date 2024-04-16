@@ -38,16 +38,10 @@
     </div>
   </ul>
   <div>
-
-    <!-- {% with valores = [0.2, 0.8] %}
-      {% with labels = [1, 2] %}
-        {% include 'pizza.html' %}
-      {% endwith %}
-    {% endwith %} -->
     <a
-    href="{{  request.referrer or url_for('index') }}"
-    class="btn btn-primary"
-    >Voltar para a página anterior</a
+      href="{{  request.referrer or url_for('index') }}"
+      class="btn btn-primary"
+      >Voltar para a página anterior</a
     >
   </div>
 </div>
