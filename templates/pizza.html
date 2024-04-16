@@ -1,36 +1,65 @@
-<canvas id="graficoPizza"></canvas>
-
-<div id="dadosGrafico" 
-    data-valores="{{valores}}" 
-    data-rotulos="{{labels}}">
-    
+<br />
+<div>
+  <canvas id="pieChart" width="200" height="200"></canvas>
 </div>
+<br />
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var dadosGrafico = document.getElementById('dadosGrafico'); 
-    console.log(dadosGrafico)
-    var valores = JSON.parse(dadosGrafico.dataset.valores);
-    var rotulos = JSON.parse(dadosGrafico.dataset.rotulos);
-    // Crie o gráfico de pizza usando os valores e os rótulos obtidos
-    var ctx = document.getElementById('graficoPizza').getContext('2d');
-    var graficoPizza = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: rotulos,
-            datasets: [{
-                data: valores,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(54, 162, 235, 0.5)'
-                ]
-            }]
-        },
-        options: { 
-            title: {
-                display: true,
-                text: 'Gráfico de Pizza'
-            }
-        } 
-    });
+  // Get the canvas element
+  const canvas = document.getElementById("pieChart");
+  const ctx = canvas.getContext("2d");
+
+  // Define the data for the pie chart
+  var data = JSON.parse("{{pie_data}}");
+  const labels = JSON.parse("{{pie_labels}}");
+  // const colors = ["#2222FF", "#FF2222"];
+  const colors = JSON.parse("{{ pie_colors }}");
+  
+
+  // Calculate the total value of the data
+  const total = data.reduce((sum, value) => sum + value, 0);
+
+  // Set the center coordinates of the pie chart
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
+  // Set the radius of the pie chart
+  const radius = Math.min(canvas.width, canvas.height) / 2;
+
+  // Set the starting angle for each slice
+  let startAngle = 0;
+
+  // Draw each slice of the pie chart
+  for (let i = 0; i < data.length; i++) {
+    // Calculate the end angle for the current slice
+    const endAngle = startAngle + Math.PI * 2 * (data[i] / total);
+
+    // Set the fill color for the current slice
+    const temp = colors[i % colors.length];
+    ctx.fillStyle = `rgb(${temp[0]}, ${temp[1]}, ${temp[2]})`;
+
+    // Draw the slice
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+    ctx.closePath();
+    ctx.fill();
+
+    // Calculate the percentage for the current slice
+    const percentage = ((data[i] / total) * 100).toFixed(2);
+
+    // Display the percentage inside the slice
+    ctx.fillStyle = "#fff";
+    ctx.font = "14px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const x =
+      centerX +
+      Math.cos(startAngle + (endAngle - startAngle) / 2) * radius * 0.7;
+    const y =
+      centerY +
+      Math.sin(startAngle + (endAngle - startAngle) / 2) * radius * 0.7;
+    ctx.fillText(`${labels[i]}: ${percentage}%`, x, y);
+    startAngle = endAngle;
+  }
 </script>
